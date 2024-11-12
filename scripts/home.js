@@ -1,48 +1,47 @@
-
-document.querySelectorAll('.sidebar li').forEach(item => {
-    item.addEventListener('click', () => {
-        alert(`Você clicou em: ${item.textContent}`);
-    });
-});
-
-document.getElementById('searchButton').addEventListener('click', function() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    const playlists = document.querySelectorAll('.playlist');
-    playlists.forEach(playlist => {
-        const title = playlist.querySelector('.playlist-title').textContent.toLowerCase();
-        playlist.style.display = title.includes(query) ? 'flex' : 'none';
-    });
-});
-
-// registro da música
 document.getElementById('registerId').addEventListener('click', addMusic);
 
 let musicList = JSON.parse(localStorage.getItem('musicList')) || [];
 
-// adiciona música
 function addMusic() {
     const title = document.getElementById('titleInput').value;
     const artist = document.getElementById('artistInput').value;
     const genre = document.getElementById('genderInput').value;
     const duration = document.getElementById('durationInput').value;
-    const musicLink = document.getElementById('musicInput').value;
+    const musicInput = document.getElementById('musicInput').files[0];
 
-    if (!title || !artist || !genre || !duration || !musicLink) {
+    if (!title || !artist || !genre || !duration || !musicInput) {
         alert('Todos os campos devem ser preenchidos!');
         return;
     }
 
-    const musicEntry = { title, artist, genre, duration, musicLink };
+    const musicEntry = {
+        title,
+        artist,
+        genre,
+        duration,
+        musicLink: URL.createObjectURL(musicInput) 
+    };
+
     musicList.push(musicEntry);
     localStorage.setItem('musicList', JSON.stringify(musicList));
+    
     alert('Música cadastrada com sucesso!');
-    renderPlaylists(); // Atualiza a exibição das playlists
+    renderPlaylists(); 
+
+    clearInputFields();
 }
 
-// Função para renderizar as playlists
+function clearInputFields() {
+    document.getElementById('titleInput').value = '';
+    document.getElementById('artistInput').value = '';
+    document.getElementById('genderInput').value = '';
+    document.getElementById('durationInput').value = '';
+    document.getElementById('musicInput').value = ''; 
+}
+
 function renderPlaylists() {
     const playlistsContainer = document.querySelector('.playlists-container');
-    playlistsContainer.innerHTML = ''; // Limpa playlists existentes
+    playlistsContainer.innerHTML = '';
 
     musicList.forEach((music, index) => {
         const playlistDiv = document.createElement('div');
@@ -63,42 +62,56 @@ function renderPlaylists() {
         deleteButton.textContent = 'Deletar';
         deleteButton.className = 'delete-button';
         deleteButton.addEventListener('click', (event) => {
-            event.stopPropagation(); 
-            deleteMusic(index); // Chama a função para deletar a música
+            event.stopPropagation();
+            deleteMusic(index);
         });
 
-        // Cria a imagem de play com link
-        const link = document.createElement('a');
-        link.href = music.musicLink; // Define o link da música
-        link.target = '_blank'; 
-        link.style.textDecoration = 'none'; 
-        link.style.color = 'white'; 
-        link.classList.add('play-button');
+        const playButton = document.createElement('button');
+        playButton.textContent = 'Reproduzir';
+        playButton.className = 'play-button';
+        playButton.addEventListener('click', () => {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = music.musicLink;  
+            audioPlayer.style.display = 'block'; 
+            audioPlayer.play();
+        });
 
-        const img = document.createElement('img');
-        img.src = '../assets/play.jpg'; 
-        img.alt = music.title;
-        img.style.cursor = 'pointer'; 
-
-        link.appendChild(img);
-
-     
         playlistInfoDiv.appendChild(titleElem);
         playlistInfoDiv.appendChild(descriptionElem);
         playlistInfoDiv.appendChild(deleteButton);
-        
-        
-        playlistDiv.appendChild(link);
+        playlistInfoDiv.appendChild(playButton);
+
         playlistDiv.appendChild(playlistInfoDiv);
         playlistsContainer.appendChild(playlistDiv);
     });
 }
 
-// deletamúsica
 function deleteMusic(index) {
-    musicList.splice(index, 1); 
-    localStorage.setItem('musicList', JSON.stringify(musicList)); 
+    musicList.splice(index, 1);
+    localStorage.setItem('musicList', JSON.stringify(musicList));
     renderPlaylists();
 }
 
+function searchItems() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const items = document.querySelectorAll('.item');
+    
+    items.forEach(item => {
+        const itemText = item.textContent.toLowerCase();
+        
+        if (itemText.includes(searchTerm)) {
+            item.classList.remove('hidden');
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+}
+
+document.getElementById('searchButton').addEventListener('click', searchItems);
+
+document.getElementById('searchInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        searchItems(); //não funciona essa parte e tem que arrumar o tamanho do player
+    }
+});
 renderPlaylists();

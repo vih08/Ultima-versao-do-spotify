@@ -11,11 +11,10 @@ body {
 
 header {
     background-color: #1DB954;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
-
 .sidebar {
     width: 220px;
     background-color: #1DB954;
@@ -23,6 +22,36 @@ header {
     height: 100vh;
     position: sticky;
     top: 0;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+}
+
+.sidebar h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.5em;
+    text-align: left;  
+}
+
+.sidebar input,
+.sidebar button {
+    width: 100%; 
+    margin: 10px 0; 
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color:#1DB954
+}
+
+.sidebar button {
+    background-color: #1AA34A;
+    color: white;
+    cursor: pointer;
+}
+
+
+.sidebar button:hover {
+    background-color: #12893D;
 }
 
 .page-content {
@@ -103,3 +132,27 @@ footer {
 #searchButton:hover {
     background-color: #1AA34A;
 }
+
+#audioPlayer{
+    position: fixed;
+    bottom: 0;  
+    left: 50%;    
+    width: 90%; 
+    background-color: #333; 
+    color: white;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    align-self: center;
+    transform: translateX(-50%); 
+    max-width: 600px; 
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    overflow-y: auto;
+    min-height: 100vh; 
+}
+
