@@ -7,11 +7,11 @@ function login() {
 
     let usuario = usuarios.find(usuario => usuario.email === email && atob(usuario.senha) === password);
 
-    // usuário e a senha estão corretos
+    
     if (usuario) {
-        // Armazenar que está logado no sessionStorage
+       
         sessionStorage.setItem('usuarioLogado', JSON.stringify(usuario));
-        // ir para a nova página
+     
         window.location.href = './pages/home.html';
     } else {
         document.getElementById('mensagem').innerText = 'Email ou senha incorretos';

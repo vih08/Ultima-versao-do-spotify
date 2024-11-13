@@ -1,5 +1,4 @@
 document.getElementById('registerId').addEventListener('click', addMusic);
-
 let musicList = JSON.parse(localStorage.getItem('musicList')) || [];
 
 function addMusic() {
@@ -24,10 +23,8 @@ function addMusic() {
 
     musicList.push(musicEntry);
     localStorage.setItem('musicList', JSON.stringify(musicList));
-    
     alert('Música cadastrada com sucesso!');
     renderPlaylists(); 
-
     clearInputFields();
 }
 
@@ -94,24 +91,30 @@ function deleteMusic(index) {
 
 function searchItems() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const items = document.querySelectorAll('.item');
+    const playlists = document.querySelectorAll('.playlist'); 
     
-    items.forEach(item => {
-        const itemText = item.textContent.toLowerCase();
-        
-        if (itemText.includes(searchTerm)) {
-            item.classList.remove('hidden');
+    playlists.forEach(playlist => {
+        const title = playlist.querySelector('.playlist-title').textContent.toLowerCase();
+        const artist = playlist.querySelector('.playlist-description').textContent.toLowerCase();
+
+        if (title.includes(searchTerm) || artist.includes(searchTerm)) {
+            playlist.style.display = 'block';  
         } else {
-            item.classList.add('hidden');
+            playlist.style.display = 'none';   
         }
     });
 }
-
-document.getElementById('searchButton').addEventListener('click', searchItems);
-
-document.getElementById('searchInput').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        searchItems(); //não funciona essa parte e tem que arrumar o tamanho do player
-    }
+document.getElementById('searchButton').addEventListener('click', function() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const playlists = document.querySelectorAll('.playlist');
+    playlists.forEach(playlist => {
+        const title = playlist.querySelector('.playlist-title').textContent.toLowerCase();
+        playlist.style.display = title.includes(query) ? 'flex' : 'none';
+    });
 });
+localStorage.setItem('musicList', JSON.stringify(musicList));
 renderPlaylists();
+
+
+/*o botao de buscar foi arrumado e agora só falta o localStorage salvar as músicas e 
+se quiser arrumar o tamanho do player de música*/
