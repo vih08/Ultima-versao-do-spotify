@@ -116,7 +116,7 @@ footer {
     text-align: center;
     padding: 20px;
     bottom: 0;
-    width: 7%;
+    width: 8%;
     
 }
 
@@ -158,3 +158,27 @@ main {
     min-height: 100vh; 
 }
 
+#profileButton {
+    position:fixed;
+    top: 20px; 
+    right: 20px; 
+    background-color: #4CAF50;
+    color: white; 
+    font-size: 16px; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+#profileButton:hover {
+    background-color: #45a049; 
+    transform: translateY(-2px); 
+}
+
+#profileButton:focus {
+    outline: none; 
+    box-shadow: 0 0 0 3px rgba(33, 126, 75, 0.5); 
+}

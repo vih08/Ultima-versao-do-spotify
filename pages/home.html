@@ -37,9 +37,28 @@
         
 
         <footer>
+            <p></p>
+            <p></p>
+<br>
             <p>&copy; 2024 Good Music</p>
         </footer>
     </div>
+    <button id="profileButton" onclick="showProfile()" style="position: fixed; top: 20px; right: 20px;">
+        Perfil
+    </button>
+</div>
+
+<script src="../scripts/home.js"></script>
+<script>
+    function showProfile() {
+        const userEmail = localStorage.getItem('userEmail');
+        if (userEmail) {
+            alert('Perfil do usuário: ' + userEmail);
+        } else {
+            alert('Usuario: vitoria                                                                          Senha: vih');
+        }
+    }
+</script>
 
     <script src="../scripts/home.js"></script>
 </body>
